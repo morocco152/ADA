@@ -14,6 +14,11 @@ std::vector<T> Individual<T>::getArray(){
 }
 
 template <typename T>
+bool Individual<T>::operator<(Individual<T> &_a) const {
+    return (fit_ < _a.fit_);
+}
+
+template <typename T>
 int Individual<T>::get_len(){
     return array.size();
 }
@@ -104,12 +109,24 @@ Genetic<T>::Genetic(std::vector<T> &_arr,float mt_ch, int nm_ind, int ct_cr){
 
 template <typename T>
 std::vector<Individual<T>> Genetic<T>::selection(){
- //falta :'v  
+    std::vector<T> lis_f;
+    for (int i = 0; i < population.size(); ++i)
+        lis_f.push_back(population[i].get_fitness());
+
+    return population;
+}
+
+template <typename T>
+std::vector<Individual<T>> Genetic<T>::sorted(){
+    puts("Sorting");
+    std::sort(population.begin(), population.end());
+    return population;
 }
 
 template <typename T>
 std::vector<Individual<T>> Genetic<T>::reproduction(){
-  //falta :'v
+    puts("Reproduciendo");
+    
 }
 
 template <typename T>
@@ -131,6 +148,9 @@ void Genetic<T>::print_pop(){
 
 template <typename T>
 void Genetic<T>::iniciar(){
+    print_pop();
+    selection();
+    sorted();
     print_pop();
 }
 
