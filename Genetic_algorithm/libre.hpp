@@ -10,6 +10,7 @@ private:
 public:
     Individual(std::vector<T> &);
     std::vector<T> getArray();
+    bool operator < (Individual&) const;
     void suffle(); 
     int get_len();
     void set_fitness(int);
@@ -45,6 +46,7 @@ private:
     int cant_cruce;
 public:
     Genetic(std::vector<T> &, float, int, int);
+    std::vector<Individual<T>> sorted();
     std::vector<Individual<T>> selection();
     std::vector<Individual<T>> reproduction();
     std::vector<Individual<T>> mutation();
@@ -52,14 +54,3 @@ public:
     void print_pop();
     void iniciar();
 };
-
-
-
-
-
-
-
-
-
-
-
