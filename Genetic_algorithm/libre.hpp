@@ -6,6 +6,7 @@ class Individual{
 private:
     std::vector<T> array;
     std::vector<T> copy_array;
+    std::vector<bool> estado; 
     int fit_;
 public:
     Individual(std::vector<T> &);
@@ -17,6 +18,8 @@ public:
     int get_fitness();
     void fitness();
     void print();
+    void mutar(int);
+    void l_suffle();
     void exe();
 };
 
@@ -50,6 +53,8 @@ public:
     std::vector<Individual<T>> selection();
     std::vector<Individual<T>> reproduction();
     std::vector<Individual<T>> mutation();
+    int random_pos();
+    int key_bett();
     bool is_sorted_();
     void print_pop();
     void iniciar();
