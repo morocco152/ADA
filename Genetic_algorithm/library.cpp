@@ -6,6 +6,7 @@ Individual<T>::Individual(std::vector<T> & _array){
     copy_array = _array;
     std::sort(copy_array.begin(), copy_array.end());
     fit_ = 0;
+    estado.resize(array.size());
 }
 
 template <typename T>
@@ -63,6 +64,57 @@ void Individual<T>::print(){
     std::cout << "fit:" << get_fitness();
     std::cout << "\n";
 }
+
+/// Bust_ imple 
+template <typename T>
+void Individual<T>::mutar(int genes){
+    int mejora = get_fitness() + genes;
+    while (get_fitness() <= mejora){
+        l_suffle();
+        print();
+    }
+}
+
+template <typename T>
+void Individual<T>::l_suffle(){
+    int tmp, rand_idx;
+    std::vector<T> per;
+    per.resize(array.size() - get_fitness()); 
+
+    int j = 0;
+    for (int i = 0; i < get_len(); i++){
+        if (estado[i] == false){
+            per[j] = array[i];
+            j++;
+        }
+    }
+    
+    for (int i = 0; i < per.size(); ++i){
+        tmp = per[i];
+        rand_idx = rand() % per.size();
+
+        per[i] = per[rand_idx];
+        per[rand_idx] = tmp;
+    }
+
+    j = 0;
+    for (int i = 0; i < get_len(); i++){
+        if (estado[i] == false){
+            array[i] = per[j];
+            j++;
+        }
+    }
+
+    int fit = 0;
+    for (int i = 0; i < get_len(); ++i){
+        if(array[i] == copy_array[i]){
+            ++fit;
+            estado[i] = true;
+        }
+    }
+    set_fitness(fit);
+}
+//Bust imple
 
 template <typename T>
 void Individual<T>::exe(){
@@ -126,12 +178,31 @@ std::vector<Individual<T>> Genetic<T>::sorted(){
 template <typename T>
 std::vector<Individual<T>> Genetic<T>::reproduction(){
     puts("Reproduciendo");
-    
+    //since here is experimental code//
+    std::vector<Individual<T>> worst;
+    std::vector<Individual<T>> better;
+    //int init = population.size() - cant_cruce;
+    for (int i = key_bett(); i < population.size(); ++i)
+        better.push_back(population[i]);
+
+    for (int i = 0; i < better.size(); ++i)
+        better[i].print();
+    //until here   
+
+    return population;
 }
 
 template <typename T>
-std::vector<Individual<T>> Genetic<T>::mutation(){
-  //falta :'v
+int Genetic<T>::random_pos(){
+    int position_rand;
+    position_rand = rand() % for_sort.size();
+    return position_rand;
+}
+
+template <typename T>
+int Genetic<T>::key_bett(){
+    int init = population.size() - cant_cruce;
+    return init;
 }
 
 template <typename T>
@@ -148,10 +219,16 @@ void Genetic<T>::print_pop(){
 
 template <typename T>
 void Genetic<T>::iniciar(){
+    /*
     print_pop();
     selection();
     sorted();
     print_pop();
+    reproduction();
+    */
+    print_pop();
+    sorted();
+    population[population.size()-1].mutar(2);
 }
 
 //Functions random 
@@ -162,7 +239,3 @@ void printvec(std::vector<T> & _a){
         std::cout << i << " ";
     std::cout << "\t";
 }
-
-
-
-
