@@ -12,6 +12,7 @@ public:
     Individual(std::vector<T> &);
     std::vector<T> getArray();
     bool operator < (Individual&) const;
+    void set_array(std::vector<T> &);
     void suffle(); 
     int get_len();
     void set_fitness(int);
@@ -53,7 +54,8 @@ public:
     std::vector<Individual<T>> selection();
     std::vector<Individual<T>> reproduction();
     std::vector<Individual<T>> mutation();
-    int random_pos();
+    std::vector<T> cruzar(std::vector<T> &, std::vector<T> &, std::vector<T> &);
+    int random_pos(int);
     int key_bett();
     bool is_sorted_();
     void print_pop();
