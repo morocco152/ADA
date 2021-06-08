@@ -1,7 +1,8 @@
 #include "libre.hpp"
 
 template <typename T>
-Individual<T>::Individual(std::vector<T> & _array){
+Individual<T>::Individual(std::vector<T> & _array)
+{
     array = _array;
     copy_array = _array;
     std::sort(copy_array.begin(), copy_array.end());
@@ -10,41 +11,49 @@ Individual<T>::Individual(std::vector<T> & _array){
 }
 
 template <typename T>
-std::vector<T> Individual<T>::getArray(){
+std::vector<T> Individual<T>::getArray()
+{
     return array;
 }
 
 template <typename T>
-bool Individual<T>::operator<(Individual<T> &_a) const {
+bool Individual<T>::operator<(Individual<T> &_a) const
+{
     return (fit_ < _a.fit_);
 }
 
 template <typename T>
-void Individual<T>::set_array(std::vector<T> & _new_a){
+void Individual<T>::set_array(std::vector<T> & _new_a)
+{
     array = _new_a;
     fitness();
 }
 
 template <typename T>
-int Individual<T>::get_len(){
+int Individual<T>::get_len()
+{
     return array.size();
 }
 
 template <typename T>
-void Individual<T>::set_fitness(int _s_fit){
+void Individual<T>::set_fitness(int _s_fit)
+{
     fit_ = _s_fit;
 }
 
 template <typename T>
-int Individual<T>::get_fitness(){
+int Individual<T>::get_fitness()
+{
     return fit_;
 }
 
 template <typename T>
-void Individual<T>::fitness(){
+void Individual<T>::fitness()
+{
     suffle();
     int fit = 0;
-    for (int i = 0; i < get_len(); ++i){
+    for (int i = 0; i < get_len(); ++i)
+    {
         if(array[i] == copy_array[i])
             ++fit;
     }
@@ -52,9 +61,11 @@ void Individual<T>::fitness(){
 }
 
 template <typename T>
-void Individual<T>::suffle(){
+void Individual<T>::suffle()
+{
     int tmp, rand_idx;
-    for (int i = 0; i < get_len(); ++i){
+    for (int i = 0; i < get_len(); ++i)
+    {
         tmp = array[i];
         rand_idx = rand() % get_len();
 
@@ -64,37 +75,46 @@ void Individual<T>::suffle(){
 }
 
 template <typename T>
-void Individual<T>::print(){
+void Individual<T>::print()
+{
     for (auto i : array)
         std::cout << i << " ";
+
     std::cout << "fit:" << get_fitness();
     std::cout << "\n";
 }
 
 template <typename T>
-void Individual<T>::mutar(int genes){
+void Individual<T>::mutar(int genes)
+{
+    std::cout << "Mutando" << "\n";
     int mejora = get_fitness() + genes;
-    while (get_fitness() <= mejora){
+    while (get_fitness() <= mejora)
+    {
         l_suffle();
         print();
     }
 }
 
 template <typename T>
-void Individual<T>::l_suffle(){
+void Individual<T>::l_suffle()
+{   
     int tmp, rand_idx;
     std::vector<T> per;
     per.resize(array.size() - get_fitness()); 
 
     int j = 0;
-    for (int i = 0; i < get_len(); i++){
-        if (estado[i] == false){
+    for (int i = 0; i < get_len(); i++)
+    {
+        if (estado[i] == false)
+        {
             per[j] = array[i];
             j++;
         }
     }
     
-    for (int i = 0; i < per.size(); ++i){
+    for (int i = 0; i < per.size(); ++i)
+    {
         tmp = per[i];
         rand_idx = rand() % per.size();
 
@@ -103,16 +123,20 @@ void Individual<T>::l_suffle(){
     }
 
     j = 0;
-    for (int i = 0; i < get_len(); i++){
-        if (estado[i] == false){
+    for (int i = 0; i < get_len(); i++)
+    {
+        if (estado[i] == false)
+        {
             array[i] = per[j];
             j++;
         }
     }
 
     int fit = 0;
-    for (int i = 0; i < get_len(); ++i){
-        if(array[i] == copy_array[i]){
+    for (int i = 0; i < get_len(); ++i)
+    {
+        if(array[i] == copy_array[i])
+        {
             ++fit;
             estado[i] = true;
         }
@@ -121,7 +145,8 @@ void Individual<T>::l_suffle(){
 }
 
 template <typename T>
-void Individual<T>::exe(){
+void Individual<T>::exe()
+{
     suffle();
     fitness();
 }
@@ -129,20 +154,24 @@ void Individual<T>::exe(){
 //Class Gen_Poblacion Implementation
 
 template <typename T>
-Gen_Poblacion<T>::Gen_Poblacion(std::vector<T> &_pas, int _t){
+Gen_Poblacion<T>::Gen_Poblacion(std::vector<T> &_pas, int _t)
+{
     array = _pas;
     num_ind = _t;
 }
 
 template <typename T>
-int Gen_Poblacion<T>::get_num(){
+int Gen_Poblacion<T>::get_num()
+{
     return num_ind;
 }
 
 template <typename T>
-std::vector<Individual<T>> Gen_Poblacion<T>::Generar(){
+std::vector<Individual<T>> Gen_Poblacion<T>::Generar()
+{
     std::vector< Individual<T> > new_pobl;
-    for (int i = 0; i < get_num(); ++i){
+    for (int i = 0; i < get_num(); ++i)
+    {
         Individual<T> a = Individual<T>(array);
         a.exe();
         new_pobl.push_back(a);
@@ -153,7 +182,8 @@ std::vector<Individual<T>> Gen_Poblacion<T>::Generar(){
 //genetic implementation 
 
 template <typename T>
-Genetic<T>::Genetic(std::vector<T> &_arr,float mt_ch, int nm_ind, int ct_cr){
+Genetic<T>::Genetic(std::vector<T> &_arr,float mt_ch, int nm_ind, int ct_cr)
+{
     for_sort = _arr;
     target = _arr;
     num_individuos = nm_ind;
@@ -164,24 +194,16 @@ Genetic<T>::Genetic(std::vector<T> &_arr,float mt_ch, int nm_ind, int ct_cr){
 }
 
 template <typename T>
-std::vector<Individual<T>> Genetic<T>::selection(){
-    std::vector<T> lis_f;
-    for (int i = 0; i < population.size(); ++i)
-        lis_f.push_back(population[i].get_fitness());
-
-    return population;
-}  
-
-template <typename T>
-std::vector<Individual<T>> Genetic<T>::sorted(){
+std::vector<Individual<T>> Genetic<T>::sorted()
+{
     puts("Sorting");
     std::sort(population.begin(), population.end());
     return population;
 }
 
 template <typename T>
-std::vector<Individual<T>> Genetic<T>::reproduction(){
-
+std::vector<Individual<T>> Genetic<T>::reproduction()
+{
     puts("Reproduciendo");
     std::vector<Individual<T>> better;
 
@@ -198,12 +220,12 @@ std::vector<Individual<T>> Genetic<T>::reproduction(){
         std::vector<T> _new = cruzar(padre, madre, aux);
         population[i].set_array(_new);
     }
- 
     return population;
 }
 
 template <typename T>
-std::vector<T> Genetic<T>::cruzar(std::vector<T> & _p, std::vector<T> & _m, std::vector<T> & _a){
+std::vector<T> Genetic<T>::cruzar(std::vector<T> & _p, std::vector<T> & _m, std::vector<T> & _a)
+{
     int change = random_pos(_p.size());
     for (int i = 0; i < change; ++i)
         _a[i] = _p[i];
@@ -213,50 +235,64 @@ std::vector<T> Genetic<T>::cruzar(std::vector<T> & _p, std::vector<T> & _m, std:
 }
 
 template <typename T>
-int Genetic<T>::random_pos(int _size){
+int Genetic<T>::random_pos(int _size)
+{
     int position_rand;
     position_rand = rand() % _size;
     return position_rand;
 }
 
 template <typename T>
-int Genetic<T>::key_bett(){
+int Genetic<T>::key_bett()
+{
     int init = population.size() - cant_cruce;
     return init;
 }
 
 template <typename T>
-bool Genetic<T>::is_sorted_(){
+bool Genetic<T>::is_sorted_()
+{
     return false;
 }
 
 template <typename T>
-void Genetic<T>::print_pop(){
+void Genetic<T>::print_pop()
+{
     for (int i = 0; i < population.size(); ++i)
         population[i].print();
+
     std::cout << "\n";
 }
 
 template <typename T>
-void Genetic<T>::iniciar(){
-    print_pop();
+void Genetic<T>::iniciar()
+{
+    for (int i = 0; i < 4; ++i)
+    {
+        print_pop();
+        sorted();
+        print_pop();
+        reproduction();
+    }
     sorted();
-    print_pop();
-    reproduction();
-    print_pop();
-    sorted();
-    print_pop();
-    reproduction();
-    sorted();
-    print_pop();
     population[population.size()-1].mutar(2);
-
+    
+    /*
+    print_pop();
+    sorted();
+    print_pop();
+    reproduction();
+    print_pop();
+    sorted();
+    population[population.size()-1].mutar(2);
+    */
 }
 
 //Functions random 
 
 template <typename T>
-void printvec(std::vector<T> & _a){
+void printvec(std::vector<T> & _a)
+{
     for (auto i : _a)
         std::cout << i << " ";
     std::cout << "\t";
