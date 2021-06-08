@@ -20,6 +20,12 @@ bool Individual<T>::operator<(Individual<T> &_a) const {
 }
 
 template <typename T>
+void Individual<T>::set_array(std::vector<T> & _new_a){
+    array = _new_a;
+    fitness();
+}
+
+template <typename T>
 int Individual<T>::get_len(){
     return array.size();
 }
@@ -65,7 +71,6 @@ void Individual<T>::print(){
     std::cout << "\n";
 }
 
-/// Bust_ imple 
 template <typename T>
 void Individual<T>::mutar(int genes){
     int mejora = get_fitness() + genes;
@@ -114,7 +119,6 @@ void Individual<T>::l_suffle(){
     }
     set_fitness(fit);
 }
-//Bust imple
 
 template <typename T>
 void Individual<T>::exe(){
@@ -166,7 +170,7 @@ std::vector<Individual<T>> Genetic<T>::selection(){
         lis_f.push_back(population[i].get_fitness());
 
     return population;
-}
+}  
 
 template <typename T>
 std::vector<Individual<T>> Genetic<T>::sorted(){
@@ -177,25 +181,41 @@ std::vector<Individual<T>> Genetic<T>::sorted(){
 
 template <typename T>
 std::vector<Individual<T>> Genetic<T>::reproduction(){
+
     puts("Reproduciendo");
-    //since here is experimental code//
-    std::vector<Individual<T>> worst;
     std::vector<Individual<T>> better;
-    //int init = population.size() - cant_cruce;
+
     for (int i = key_bett(); i < population.size(); ++i)
         better.push_back(population[i]);
 
-    for (int i = 0; i < better.size(); ++i)
-        better[i].print();
-    //until here   
+    int bet_t = better.size();
 
+    for (int i = 0; i < population.size(); ++i)
+    {
+        std::vector<T> padre = better[random_pos(bet_t)].getArray();
+        std::vector<T> madre = better[random_pos(bet_t)].getArray();
+        std::vector<T> aux = population[i].getArray();
+        std::vector<T> _new = cruzar(padre, madre, aux);
+        population[i].set_array(_new);
+    }
+ 
     return population;
 }
 
 template <typename T>
-int Genetic<T>::random_pos(){
+std::vector<T> Genetic<T>::cruzar(std::vector<T> & _p, std::vector<T> & _m, std::vector<T> & _a){
+    int change = random_pos(_p.size());
+    for (int i = 0; i < change; ++i)
+        _a[i] = _p[i];
+    for (int i = change; i < _a.size(); ++i)
+        _a[i] = _m[i];
+    return _a;
+}
+
+template <typename T>
+int Genetic<T>::random_pos(int _size){
     int position_rand;
-    position_rand = rand() % for_sort.size();
+    position_rand = rand() % _size;
     return position_rand;
 }
 
@@ -207,7 +227,7 @@ int Genetic<T>::key_bett(){
 
 template <typename T>
 bool Genetic<T>::is_sorted_(){
-  //falta :'v
+    return false;
 }
 
 template <typename T>
@@ -219,16 +239,18 @@ void Genetic<T>::print_pop(){
 
 template <typename T>
 void Genetic<T>::iniciar(){
-    /*
     print_pop();
-    selection();
     sorted();
     print_pop();
     reproduction();
-    */
     print_pop();
     sorted();
+    print_pop();
+    reproduction();
+    sorted();
+    print_pop();
     population[population.size()-1].mutar(2);
+
 }
 
 //Functions random 
