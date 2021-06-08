@@ -51,9 +51,8 @@ private:
 public:
     Genetic(std::vector<T> &, float, int, int);
     std::vector<Individual<T>> sorted();
-    std::vector<Individual<T>> reproduction();
-    std::vector<Individual<T>> mutation();
-    std::vector<T> cruzar(std::vector<T> &, std::vector<T> &, std::vector<T> &);
+    std::vector<Individual<T>> repro_wout_rpt();
+    std::vector<T> vec_menor(std::vector<T> &, std::vector<T> &);
     int random_pos(int);
     int key_bett();
     bool is_sorted_();
