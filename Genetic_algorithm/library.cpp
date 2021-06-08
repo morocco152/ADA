@@ -202,36 +202,61 @@ std::vector<Individual<T>> Genetic<T>::sorted()
 }
 
 template <typename T>
-std::vector<Individual<T>> Genetic<T>::reproduction()
+std::vector<Individual<T>> Genetic<T>::repro_wout_rpt()
 {
+
     puts("Reproduciendo");
     std::vector<Individual<T>> better;
 
     for (int i = key_bett(); i < population.size(); ++i)
         better.push_back(population[i]);
 
-    int bet_t = better.size();
-
-    for (int i = 0; i < population.size(); ++i)
+    int _tt = better.size();
+    for (int i = 0; i < _tt; ++i)
     {
-        std::vector<T> padre = better[random_pos(bet_t)].getArray();
-        std::vector<T> madre = better[random_pos(bet_t)].getArray();
-        std::vector<T> aux = population[i].getArray();
-        std::vector<T> _new = cruzar(padre, madre, aux);
+        std::vector<T> padre = better[random_pos(_tt)].getArray();
+        std::vector<T> madre = better[random_pos(_tt)].getArray();
+        std::vector<T> _new = vec_menor(padre, madre);
         population[i].set_array(_new);
+
+        madre.clear();
+        padre.clear();
+        _new.clear();
     }
+
+    better.clear();
     return population;
 }
 
 template <typename T>
-std::vector<T> Genetic<T>::cruzar(std::vector<T> & _p, std::vector<T> & _m, std::vector<T> & _a)
+std::vector<T> Genetic<T>::vec_menor(std::vector<T> &_p, std::vector<T> & _m)
 {
-    int change = random_pos(_p.size());
-    for (int i = 0; i < change; ++i)
-        _a[i] = _p[i];
-    for (int i = change; i < _a.size(); ++i)
-        _a[i] = _m[i];
-    return _a;
+    std::vector<T> neww;
+    for (int i = 0; i < _p.size(); ++i)
+    {
+        if (_p[i] < _m[i])
+        {
+            if ((std::find(neww.begin(), neww.end(), _p[i]) != neww.end()) == false)
+                neww.push_back(_p[i]);
+        } 
+        if (_p[i] > _m[i])
+        {
+            if ((std::find(neww.begin(), neww.end(), _p[i]) != neww.end()) == false)
+                neww.push_back(_p[i]);
+        } 
+        else if (_m[i] > _p[i]) 
+        {
+            if ((std::find(neww.begin(), neww.end(), _m[i]) != neww.end()) == false)
+                neww.push_back(_m[i]);
+        }
+        else if (_p[i] == _m[i])
+        {
+            if ((std::find(neww.begin(), neww.end(), _p[i]) != neww.end()) == false)
+                neww.push_back(_p[i]);
+        }
+    }
+    
+    return neww;
 }
 
 template <typename T>
@@ -267,25 +292,16 @@ void Genetic<T>::print_pop()
 template <typename T>
 void Genetic<T>::iniciar()
 {
-    for (int i = 0; i < 4; ++i)
-    {
-        print_pop();
-        sorted();
-        print_pop();
-        reproduction();
-    }
+    print_pop();
     sorted();
-    population[population.size()-1].mutar(2);
-    
-    /*
+    repro_wout_rpt();
     print_pop();
     sorted();
     print_pop();
-    reproduction();
+    repro_wout_rpt();
     print_pop();
     sorted();
     population[population.size()-1].mutar(2);
-    */
 }
 
 //Functions random 
