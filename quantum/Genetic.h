@@ -4,7 +4,7 @@ using namespace std;
 
 class Genetic
 {
-    protected:
+    private:
         size_t generations;
         size_t cromosoma_size;
         size_t population_size;
@@ -12,13 +12,13 @@ class Genetic
         vector<Individuo> population;
 
     private:
+        void initialize_Population();
         void make();
         void repair();
         void evaluate();
-        void initialize_Population();
+        float get_rotation_angle(const int,const int, bool);
         void quantum_gate(Individuo&, Individuo&);
-        float_t get_rotation_angle(const int, const int, bool);
-        void appling_rotating_gate(Individuo &, Individuo &);
+
     public:
         Genetic(size_t, size_t, size_t, const int);
         ~Genetic();
