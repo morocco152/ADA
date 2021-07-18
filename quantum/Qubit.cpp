@@ -8,6 +8,6 @@ int Qubit::colapso() const{
     double probability = (double)rand() / (double)RAND_MAX;
     if (probability < beta * beta)
         return 1; 
-	return 0;
+    return 0;
 }
 
