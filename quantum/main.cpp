@@ -10,7 +10,7 @@ int main(int argc, char **argv)
     // fitness repair 2 
 
     puts("fitness : Penalty!");    
-    Genetic a(30,50,1000,300,1);
+    Genetic a(20,50,1000,300,1);
     a.exe();
 
     puts("fitness : Repair");
