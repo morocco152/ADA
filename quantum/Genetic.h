@@ -10,6 +10,7 @@ class Genetic
         size_t population_size;
         const int max_capacity;
         vector<Individuo> population;
+        const int ty_fitness;
 
     private:
         void initialize_Population();
@@ -17,10 +18,10 @@ class Genetic
         void repair();
         void evaluate();
         float get_rotation_angle(const int,const int, bool);
-        void quantum_gate(Individuo&, Individuo&);
+        void update(Individuo&, Individuo&);
 
     public:
-        Genetic(size_t, size_t, size_t, const int);
+        Genetic(size_t, size_t, size_t, const int,const int);
         ~Genetic();
         void exe();
 };
